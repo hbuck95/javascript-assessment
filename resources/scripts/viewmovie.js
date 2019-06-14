@@ -2,12 +2,13 @@ const API_KEY = "db138ac0";
 const DATA_API = `http://www.omdbapi.com/?apikey=${API_KEY}&i=`;
 const POSTER_API = `http://img.omdbapi.com/?apikey=${API_KEY}&`;
 let posterUrl;
+let imdb_id;
 
 loadMovieDetails();
 
 
 function loadMovieDetails() {
-    let imdb_id = sessionStorage.getItem("movie");
+    imdb_id = localStorage.getItem("movie");
 
     makeDataRequest(imdb_id)
         .then(data => displayMovieDetails(data))
@@ -49,7 +50,7 @@ function makeDataRequest(url) {
 }
 
 function goBack() {
-    var history = JSON.parse(sessionStorage.getItem("history"));
+    var history = JSON.parse(localStorage.getItem("history"));
 
     console.log(history);
 
@@ -61,6 +62,7 @@ function goBack() {
     if (!history.includes(posterUrl)) {
         history.push(posterUrl);
     }
-    sessionStorage.setItem("history", JSON.stringify(history));
-    window.location.assign("index.html")
+    localStorage.setItem("history", JSON.stringify(history));
+    localStorage.setItem(posterUrl, imdb_id);
+    window.location.assign("index.html");
 }

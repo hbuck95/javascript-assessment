@@ -84,7 +84,7 @@ function displayData(data) {
 
 function viewMovieInfo(id) {
     console.log("id is " + id);
-    sessionStorage.setItem("movie", id);
+    localStorage.setItem("movie", id);
     window.location.assign("viewmovie.html")
 }
 
@@ -98,7 +98,7 @@ function searchForFilm() {
 }
 
 function loadHistory() {
-    var history = JSON.parse(sessionStorage.getItem("history"));
+    var history = JSON.parse(localStorage.getItem("history"));
 
     console.log(history);
 
@@ -112,6 +112,7 @@ function loadHistory() {
         let img = document.createElement('img');
         img.src = url;
         historyField.appendChild(img);
+        img.onclick = function() { viewMovieInfo(localStorage.getItem(url))};
     }
 
 
