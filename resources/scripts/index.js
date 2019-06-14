@@ -2,6 +2,8 @@ const API_KEY = "db138ac0";
 const DATA_API = `http://www.omdbapi.com/?apikey=${API_KEY}&s=`;
 const POSTER_API = `http://img.omdbapi.com/?apikey=${API_KEY}&`;
 
+loadHistory();
+
 function makeDataRequest(url) {
     return new Promise((res, rej) => {
         const req = new XMLHttpRequest();
@@ -82,7 +84,7 @@ function displayData(data) {
 
 function viewMovieInfo(id) {
     console.log("id is " + id);
-    sessionStorage.setItem("movie", id);
+    localStorage.setItem("movie", id);
     window.location.assign("viewmovie.html")
 }
 
@@ -93,4 +95,25 @@ function searchForFilm() {
     makeDataRequest(titleToSearch)
         .then(data => displayData(data))
         .catch(error => console.log(error));
+}
+
+function loadHistory() {
+    var history = JSON.parse(localStorage.getItem("history"));
+
+    console.log(history);
+
+    //console.log(posterUrl);
+    if (history === null) {
+        return;
+    }
+
+    let historyField = document.getElementById("History");
+    for (let url of history) {
+        let img = document.createElement('img');
+        img.src = url;
+        historyField.appendChild(img);
+        img.onclick = function() { viewMovieInfo(localStorage.getItem(url))};
+    }
+
+
 }

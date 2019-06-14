@@ -1,12 +1,14 @@
 const API_KEY = "db138ac0";
 const DATA_API = `http://www.omdbapi.com/?apikey=${API_KEY}&i=`;
 const POSTER_API = `http://img.omdbapi.com/?apikey=${API_KEY}&`;
+let posterUrl;
+let imdb_id;
 
 loadMovieDetails();
 
 
 function loadMovieDetails() {
-    let imdb_id = sessionStorage.getItem("movie");
+    imdb_id = localStorage.getItem("movie");
 
     makeDataRequest(imdb_id)
         .then(data => displayMovieDetails(data))
@@ -16,17 +18,17 @@ function loadMovieDetails() {
 function displayMovieDetails(data) {
     let movie = JSON.parse(data);
     let keys = ["Title", "Year", "Rated"];
-    let posterUrl = movie["Poster"];
+    posterUrl = movie["Poster"];
 
     document.title = movie["Title"];
 
-    for(let key of keys){
+    for (let key of keys) {
         document.getElementById(key).innerText = movie[key];
     }
 
     let img = document.createElement('img');
     img.src = posterUrl;
-    document.getElementById("Poster").appendChild(img);    
+    document.getElementById("Poster").appendChild(img);
 }
 
 function makeDataRequest(url) {
@@ -47,12 +49,20 @@ function makeDataRequest(url) {
     });
 }
 
-function goBack(){
-    var history = JSON.parse(sessionStorage.getItem("history"));
+function goBack() {
+    var history = JSON.parse(localStorage.getItem("history"));
 
-    //if(history.con)
     console.log(history);
 
+    //console.log(posterUrl);
+    if (history === null) {
+        history = [];
+    }
 
-    //window.location.assign("index.html")
+    if (!history.includes(posterUrl)) {
+        history.push(posterUrl);
+    }
+    localStorage.setItem("history", JSON.stringify(history));
+    localStorage.setItem(posterUrl, imdb_id);
+    window.location.assign("index.html");
 }
