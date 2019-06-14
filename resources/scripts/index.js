@@ -1,7 +1,6 @@
 const API_KEY = "db138ac0";
 const DATA_API = `http://www.omdbapi.com/?apikey=${API_KEY}&s=`;
 const POSTER_API = `http://img.omdbapi.com/?apikey=${API_KEY}&`;
-let movies = [];
 
 function makeDataRequest(url) {
     return new Promise((res, rej) => {
@@ -24,13 +23,6 @@ function makeDataRequest(url) {
 function displayData(data) {
 
     let results = JSON.parse(data); //Convert the json data to an object
-
-
-    //console.log(results.Search);
-
-    //console.log(results.Search[0]);
-
-
     let dataTable = document.getElementById("tbl");
     let keys = ["Title", "Year", "Type", "More Detail"];
 
@@ -86,11 +78,12 @@ function displayData(data) {
         }
 
     }
-
 }
 
 function viewMovieInfo(id) {
     console.log("id is " + id);
+    sessionStorage.setItem("movie", id);
+    window.location.assign("viewmovie.html")
 }
 
 function searchForFilm() {
@@ -100,5 +93,4 @@ function searchForFilm() {
     makeDataRequest(titleToSearch)
         .then(data => displayData(data))
         .catch(error => console.log(error));
-
 }
